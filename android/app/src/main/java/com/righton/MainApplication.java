@@ -1,32 +1,35 @@
 package com.righton;
 
 import android.app.Application;
+import android.content.Context;
 
-import com.facebook.react.ReactApplication;
+import androidx.multidex.MultiDex;
+
 import com.amazonaws.RNAWSCognitoPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
-import com.corbt.keepawake.KCKeepAwakePackage;
-import com.imagepicker.ImagePickerPackage;
-import com.swmansion.gesturehandler.react.RNGestureHandlerPackage;
-import com.RNFetchBlob.RNFetchBlobPackage;
-import com.microsoft.codepush.react.CodePush;
+import com.facebook.react.PackageList;
+import com.facebook.react.ReactApplication;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;
-import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
+import com.microsoft.codepush.react.CodePush;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainApplication extends Application implements ReactApplication {
 
+  @Override
+  protected void attachBaseContext(Context base) {
+    super.attachBaseContext(base);
+    MultiDex.install(this);
+  }
+
   private final ReactNativeHost mReactNativeHost = new ReactNativeHost(this) {
 
-        @Override
-        protected String getJSBundleFile() {
-        return CodePush.getJSBundleFile();
-        }
-    
+    @Override
+    protected String getJSBundleFile() {
+      return CodePush.getJSBundleFile();
+    }
+
     @Override
     public boolean getUseDeveloperSupport() {
       return BuildConfig.DEBUG;
@@ -34,16 +37,9 @@ public class MainApplication extends Application implements ReactApplication {
 
     @Override
     protected List<ReactPackage> getPackages() {
-      return Arrays.<ReactPackage>asList(
-          new MainReactPackage(),
-            new RNAWSCognitoPackage(),
-            new VectorIconsPackage(),
-            new KCKeepAwakePackage(),
-            new ImagePickerPackage(),
-            new RNGestureHandlerPackage(),
-            new RNFetchBlobPackage(),
-            new CodePush(getResources().getString(R.string.reactNativeCodePush_androidDeploymentKey), getApplicationContext(), BuildConfig.DEBUG)
-      );
+      List<ReactPackage> packages = new PackageList(this).getPackages();
+      packages.add(new RNAWSCognitoPackage());
+      return packages;
     }
 
     @Override

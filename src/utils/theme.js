@@ -30,6 +30,8 @@ const colors = {
   grayIcon: '#828f9b',
   mask: 'rgba(52, 52, 52, 0.8)',
   red: '#c0001d',
+  buttonPrimary: '#FC1047',
+  buttonSecondary: '#159EFA',
 };
 
 const elevation = {
